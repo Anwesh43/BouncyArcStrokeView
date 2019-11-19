@@ -26,3 +26,26 @@ fun Float.maxScale(i : Int, n : Int) : Float = Math.max(0f, this - i * n.inverse
 fun Float.divideScale(i : Int, n : Int) : Float = Math.min(n.inverse(), maxScale(i, n)) * n
 fun Float.sinify() : Float = Math.sin(this * Math.PI).toFloat()
 fun Float.cosify() : Float = 1f - Math.sin(Math.PI / 2 + (Math.PI / 2) * this).toFloat()
+
+fun Canvas.drawBouncyArcStroke(size : Float, scale : Float, paint : Paint) {
+    val sf : Float = scale.sinify()
+    val sc : Float = scale.divideScale(1, 2).cosify()
+    paint.style = Paint.Style.FILL
+    drawArc(RectF(-size, -size, size, size), 0f, 360f * sf, true, paint)
+    paint.style = Paint.Style.STROKE
+    drawArc(RectF(-size, -size, size, size), 360f * (1 - sc), 360f * sc, false, paint)
+}
+
+fun Canvas.drawBASNode(i : Int, scale : Float, paint : Paint) {
+    val w : Float = width.toFloat()
+    val h : Float = height.toFloat()
+    val gap : Float = w / (nodes + 1)
+    val size : Float = gap / sizeFactor
+    paint.color = foreColor
+    paint.strokeCap = Paint.Cap.ROUND
+    paint.strokeWidth = Math.min(w, h) / strokeFactor
+    save()
+    translate(gap * (i + 1), h / 2)
+    drawBouncyArcStroke(size, scale, paint)
+    restore()
+}
