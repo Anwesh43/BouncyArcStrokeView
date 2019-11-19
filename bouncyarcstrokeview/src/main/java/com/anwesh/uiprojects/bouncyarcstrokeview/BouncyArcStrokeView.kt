@@ -202,4 +202,13 @@ class BouncyArcStrokeView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    companion object {
+
+        fun create(activity : Activity) : BouncyArcStrokeView {
+            val view : BouncyArcStrokeView = BouncyArcStrokeView(activity)
+            activity.setContentView(view)
+            return view
+        }
+    }
 }
