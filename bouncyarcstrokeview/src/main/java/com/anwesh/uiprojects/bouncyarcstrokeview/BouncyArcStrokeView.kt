@@ -179,4 +179,26 @@ class BouncyArcStrokeView(ctx : Context) : View(ctx) {
             curr.startUpdating(cb)
         }
     }
+
+    data class Renderer(var view : BouncyArcStrokeView) {
+
+        private val animator : Animator = Animator(view)
+        private val bas : BouncyArcStroke = BouncyArcStroke(0)
+
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(backColor)
+            bas.draw(canvas, paint)
+            animator.animate {
+                bas.update {
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            bas.startUpdating {
+                animator.start()
+            }
+        }
+    }
 }
